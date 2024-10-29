@@ -1,5 +1,32 @@
 const axios = require('axios');
 const Product = require('../models/Product');
+// src/services/ImportService.js
+const nodemailer = require('nodemailer');
+
+const sendErrorEmail = async (error) => {
+  // Configuração do transporte de e-mail
+  let transporter = nodemailer.createTransport({
+    // Configurações do seu serviço de e-mail
+  });
+
+  let info = await transporter.sendMail({
+    from: '"Open Food API" <noreply@openfoodapi.com>',
+    to: 'admin@openfoodapi.com',
+    subject: 'Erro durante a importação de dados',
+    text: `Ocorreu um erro durante a importação: ${error.message}`,
+  });
+};
+
+module.exports = {
+  importData: async () => {
+    try {
+      // ... código de importação
+    } catch (error) {
+      console.error('Erro durante a importação:', error);
+      await sendErrorEmail(error);
+    }
+  },
+};
 
 module.exports = {
   importData: async () => {

@@ -6,3 +6,6 @@ app.use(express.json());
 app.use('/', productRoutes);
 
 module.exports = app;
+
+const setupSwagger = require('./swagger');
+setupSwagger(app);

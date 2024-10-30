@@ -1,11 +1,12 @@
 const express = require('express');
 const app = express();
 const productRoutes = require('./routes/productRoutes');
+const setupSwagger = require('./swagger');
 
 app.use(express.json());
+
 app.use('/', productRoutes);
 
-module.exports = app;
-
-const setupSwagger = require('./swagger');
 setupSwagger(app);
+
+module.exports = app;

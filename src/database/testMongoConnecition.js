@@ -1,13 +1,14 @@
 // testMongoConnection.js
-require('dotenv').config();
-const mongoose = require('mongoose');
+import dotenv from 'dotenv';
+dotenv.config();
+import { connect, connection } from 'mongoose';
 
-mongoose.connect(process.env.MONGODB_URI, {
+connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-const db = mongoose.connection;
+const db = connection;
 
 db.on('connected', () => {
   console.log('Conexão bem-sucedida com o MongoDB');

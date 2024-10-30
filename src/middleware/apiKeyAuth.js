@@ -1,10 +1,16 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-module.exports = (req, res, next) => {
-  const apiKey = req.headers['x-api-key'];
-  if (apiKey && apiKey === process.env.API_KEY) {
-    next();
-  } else {
-    res.status(401).json({ message: 'Unauthorized' });
+dotenv.config();
+
+const apiKeyAuth = (req, res, next) => {
+  const apiKey = req.header('x-api-key');
+  const validApiKey = process.env.API_KEY;
+
+  if (!apiKey || apiKey !== validApiKey) {
+    return res.status(401).json({ message: 'Acesso não autorizado' });
   }
+
+  next();
 };
+
+export default apiKeyAuth;

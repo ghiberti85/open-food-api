@@ -1,8 +1,12 @@
-const cron = require('node-cron');
-const ImportService = require('../services/ImportService');
-require('dotenv').config();
+import ImportService from '../services/ImportService.js';
+import { schedule } from 'node-cron';
+import dotenv from 'dotenv';
 
-cron.schedule(process.env.CRON_SCHEDULE, () => {
+// Load environment variables
+dotenv.config();
+
+// Schedule the data import job
+schedule(process.env.CRON_SCHEDULE, () => {
   console.log('Iniciando importação de dados...');
   ImportService.importData();
 });

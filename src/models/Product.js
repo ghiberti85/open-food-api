@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const ProductSchema = new mongoose.Schema({
+const ProductSchema = new Schema({
   code: { type: String, required: true, unique: true },
   status: { type: String, enum: ['draft', 'trash', 'published'], default: 'draft' },
   imported_t: { type: Date, default: Date.now },
@@ -26,4 +26,4 @@ const ProductSchema = new mongoose.Schema({
   image_url: { type: String }
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+export default model('Product', ProductSchema);

@@ -1,12 +1,12 @@
-const os = require('os');
-const process = require('process');
-const db = require('../database/connection');
+import os from 'os';
+import process from 'process';
+import db from '../database/connection.js';
 
 class ApiDetails {
   static getDetails() {
     const uptime = process.uptime();
     const memoryUsage = process.memoryUsage();
-    const lastCronExecution = 'Informação não disponível'; // Você pode implementar o registro da última execução do CRON
+    const lastCronExecution = 'Informação não disponível'; // Implement the last CRON execution tracking as needed
     const dbStatus = db.connection.readyState === 1 ? 'Conectado' : 'Desconectado';
 
     return {
@@ -18,4 +18,4 @@ class ApiDetails {
   }
 }
 
-module.exports = ApiDetails;
+export default ApiDetails;

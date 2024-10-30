@@ -1,7 +1,9 @@
-const app = require('./src/app');
-require('dotenv').config();
-require('./src/cron/importData'); // Inicia o CRON
-require('./src/database/connection'); // Conexão com o banco de dados
+import app from './src/app.js';
+import dotenv from 'dotenv';
+import './src/cron/importData.js'; // Start the CRON job
+import './src/database/connection.js'; // Connect to the database
+
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 

@@ -1,26 +1,34 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
-// Definindo a variável uri
+dotenv.config();
+
+// Extract connect and connection from mongoose
+const { connect, connection } = mongoose;
+
+// Define the MongoDB URI from environment variables
 const uri = process.env.MONGODB_URI;
 
-// Verificando se a variável uri está definida
+// Check if the URI is defined
 if (!uri) {
   console.error('A variável MONGODB_URI não está definida no arquivo .env');
   process.exit(1);
 }
 
-// Conectando ao MongoDB
-mongoose.connect(uri);
+// Connect to MongoDB without deprecated options
+connect(uri)
+  .then(() => {
+    console.log('Conectado ao MongoDB Atlas');
+  })
+  .catch((err) => {
+    console.error('Erro na conexão com o MongoDB:', err.message);
+    process.exit(1);
+  });
 
-const db = mongoose.connection;
-
-db.on('connected', () => {
-  console.log('Conectado ao MongoDB Atlas');
-});
-
-db.on('error', (err) => {
+// Handle connection error events
+connection.on('error', (err) => {
   console.error('Erro na conexão com o MongoDB:', err);
 });
 
-module.exports = mongoose;
+// Export the connection for use in other modules
+export default connection;

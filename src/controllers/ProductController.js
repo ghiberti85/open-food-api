@@ -7,6 +7,17 @@ class ProductController {
     res.json(details);
   }
 
+  async createProduct(req, res) {
+    try {
+      const product = await ProductService.createProduct(req.body);
+      res.status(201).json(product);
+    } catch (error) {
+      console.log('Erro ao criar o produto:', error.message); // Log do erro
+      res.status(400).json({ message: 'Erro ao criar o produto', error });
+    }
+  }
+  
+
   async updateProduct(req, res) {
     const { code } = req.params;
     const data = req.body;

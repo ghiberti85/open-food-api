@@ -1,6 +1,12 @@
 const Product = require('../models/Product');
 
 class ProductService {
+
+  async createProduct(data) {
+    const newProduct = new Product(data);
+    return await newProduct.save();
+  }
+  
   async updateProduct(code, data) {
     return Product.findOneAndUpdate({ code }, data, { new: true, upsert: true });
   }

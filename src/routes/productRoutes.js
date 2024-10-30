@@ -30,6 +30,26 @@ router.get('/', ProductController.getApiDetails);
  *       200:
  *         description: Produto atualizado
  */
+
+router.post('/products', apiKeyAuth, ProductController.createProduct);
+
+/**
+ * @swagger
+ * /products/{code}:
+ *   put:
+ *     summary: Atualiza um produto
+ *     parameters:
+ *       - in: path
+ *         name: code
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Código do produto
+ *     responses:
+ *       200:
+ *         description: Produto atualizado
+ */
+
 router.put('/products/:code', apiKeyAuth, ProductController.updateProduct);
 
 /**

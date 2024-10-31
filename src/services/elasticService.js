@@ -8,6 +8,8 @@ const client = new Client({
   },
 });
 
+export { client };
+
 /**
  * Check the Elastic Search connection status.
  */
@@ -34,13 +36,15 @@ export const searchProducts = async (query) => {
           multi_match: {
             query,
             fields: ['product_name', 'brands', 'categories'],
+            fuzziness: 'AUTO',
           },
         },
       },
     });
 
+    console.log('Elasticsearch search term:', query);
     // Log the full response to confirm the correct structure
-    console.log('Full Elastic Search response:', JSON.stringify(response, null, 2));
+    console.log('Full Elasticsearch response:', JSON.stringify(response, null, 2));
 
     const hits = response.hits?.hits; // Access hits directly from response
     if (!hits) {

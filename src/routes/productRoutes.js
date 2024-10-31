@@ -8,6 +8,7 @@ import {
   listProducts,
   searchProductsElastic
 } from '../controllers/ProductController.js';
+import ImportService from '../services/ImportService.js';
 
 const router = Router();
 
@@ -219,5 +220,26 @@ router.get('/products', listProducts);
  *                     type: string
  */
 router.get('/search', searchProductsElastic);
+
+/**
+ * @swagger
+ * /import:
+ *   post:
+ *     summary: Trigger manual data import
+ *     description: Manually trigger the data import process.
+ *     responses:
+ *       200:
+ *         description: Data import triggered successfully
+ *       500:
+ *         description: Data import failed
+ */
+router.post('/import', async (req, res) => {
+  try {
+    await ImportService.importData();
+    res.status(200).json({ message: 'Data import triggered successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Data import failed.', error: error.message });
+  }
+});
 
 export default router;

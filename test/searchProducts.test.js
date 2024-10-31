@@ -12,7 +12,7 @@ describe('Search Products', () => {
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBeGreaterThan(0);
-    expect(response.body[0]).toHaveProperty('product_name', 'Sample Product');
+    expect(response.body[0]).toHaveProperty('product_name', 'Organic Maple Syrup, Grade A Dark');
   });
 });
 

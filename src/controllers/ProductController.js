@@ -1,15 +1,16 @@
 import ProductService from '../services/ProductService.js';
 import ApiDetails from '../utils/ApiDetails.js';
+import { searchProducts as elasticSearchProducts } from '../services/elasticService.js';
 
 class ProductController {
   // Get API details
   static async getApiDetails(req, res) {
     try {
-      const details = ApiDetails.getDetails();
-      res.json(details);
+      const details = ApiDetails.getDetails(); // Ensure correct invocation
+      res.status(200).json(details);
     } catch (error) {
       console.error('Erro ao obter detalhes da API:', error.message);
-      res.status(500).json({ message: 'Erro ao obter detalhes da API', error });
+      res.status(500).json({ message: 'Erro ao obter detalhes da API', error: error.message });
     }
   }
 
@@ -83,14 +84,31 @@ class ProductController {
       res.status(500).json({ message: 'Erro ao listar os produtos', error });
     }
   }
+
+  // Função de busca com ElasticSearch
+  static async searchProductsElastic(req, res) {
+    const { query } = req.query;
+    if (!query) {
+      return res.status(400).json({ message: 'Consulta de busca ausente.' });
+    }
+    
+    try {
+      const results = await elasticSearchProducts(query);
+      res.json(results);
+    } catch (error) {
+      console.error('Erro ao buscar produtos:', error.message);
+      res.status(500).json({ message: 'Erro ao buscar produtos', error });
+    }
+  }
 }
 
-// Export individual methods as named exports
-export const { 
-  getApiDetails, 
-  createProduct, 
-  updateProduct, 
-  deleteProduct, 
-  getProduct, 
-  listProducts 
+// Export all static methods as named exports
+export const {
+  getApiDetails,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getProduct,
+  listProducts,
+  searchProductsElastic // Add searchProducts to exports
 } = ProductController;

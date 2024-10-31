@@ -1,40 +1,29 @@
+// ProductService.js
 import Product from '../models/Product.js';
 
 class ProductService {
-  // Create a new product
-  async createProduct(data) {
-    const newProduct = new Product(data);
-    return await newProduct.save();
+  static async createProduct(data) {
+    const product = new Product(data);
+    return await product.save();
   }
 
-  // Update a product by code
-  async updateProduct(code, data) {
-    return await Product.findOneAndUpdate(
-      { code },
-      data,
-      { new: true, upsert: true }
-    );
+  static async updateProduct(code, data) {
+    return await Product.findOneAndUpdate({ code }, data, { new: true });
   }
 
-  // Soft delete a product by setting its status to 'trash'
-  async deleteProduct(code) {
-    return await Product.findOneAndUpdate(
-      { code },
-      { status: 'trash' },
-      { new: true }
-    );
+  static async deleteProduct(code) {
+    return await Product.findOneAndUpdate({ code }, { status: 'trash' }, { new: true });
   }
 
-  // Get a product by code
-  async getProduct(code) {
+  static async getProduct(code) {
     return await Product.findOne({ code });
   }
 
-  // List products with pagination
-  async listProducts(page, limit) {
-    const skip = (page - 1) * limit;
-    return await Product.find().skip(skip).limit(limit);
+  static async listProducts(page, limit) {
+    return await Product.find({ status: { $ne: 'trash' } })
+      .skip((page - 1) * limit)
+      .limit(limit);
   }
 }
 
-export default new ProductService();
+export default ProductService;
